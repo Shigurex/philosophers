@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 19:40:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 22:32:39 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/11 21:12:49 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@
 # define FALSE 0
 # define ERROR -1
 
-# define USED 1
-# define UNUSED 0
+enum e_fork_state {
+	USED,
+	UNUSED
+};
 
 enum e_state {
 	TAKEN_A_FORK,
@@ -41,27 +43,24 @@ enum e_state {
 };
 
 typedef struct s_philos {
-	ssize_t			id;
-	enum e_state	state;
-	ssize_t			action_time;
-	int				*right_fork;
-	int				*left_fork;
+	ssize_t				id;
+	enum e_fork_state	*right_fork;
+	enum e_fork_state	*left_fork;
 }	t_philos;
 
 typedef struct s_vars {
-	ssize_t		philos_num;
-	ssize_t		die_time;
-	ssize_t		eat_time;
-	ssize_t		sleep_time;
-	int			option_arg;
-	ssize_t		eat_num;
-	int			*forks;
-	t_philos	*philos;
+	ssize_t				philos_num;
+	ssize_t				die_time;
+	ssize_t				eat_time;
+	ssize_t				sleep_time;
+	int					option_arg;
+	ssize_t				eat_num;
+	enum e_fork_state	*forks;
+	t_philos			*philos;
 }	t_vars;
 
 int		init_setup(int argc, char **argv, t_vars *vars);
 ssize_t	get_time(void);
-ssize_t	get_time_diff(size_t old_time, size_t new_time);
 void	print_state(enum e_state state);
 
 #endif

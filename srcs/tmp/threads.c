@@ -1,27 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/10 19:48:32 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 18:52:50 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/11 21:16:19 by yahokari          #+#    #+#             */
+/*   Updated: 2022/09/11 21:17:23 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-void	print_state(enum e_state state)
+void	*thread_func(void *vars)
 {
-	if (state == TAKEN_A_FORK)
-		printf(TAKEN_A_FORK_MESSAGE, 100, 1);
-	else if (state == EATING)
-		printf(EATING_MESSAGE, 100, 1);
-	else if (state == SLEEPING)
-		printf(SLEEPING_MESSAGE, 100, 1);
-	else if (state == THINKING)
-		printf(THINKING_MESSAGE, 100, 1);
-	else if (state == DIED)
-		printf(DIED_MESSAGE, 100, 1);
+	(void)vars;
+}
+
+// void	create_forks(t_vars *vars)
+// {
+// 	vars->forks = malloc(sizeof(enum e_fork_state) * vars->num_philos);
+	
+// }
+
+pthread_t	*create_threads(t_vars *vars)
+{
+	size_t		i;
+	pthread_t	*threads;
+
+	threads = malloc(sizeof(pthread_t) * vars->philos_num);
+	i = 0;
+	while (i < vars->philos_num)
+	{
+		pthread_create(&threads[i], NULL, &thread_func, vars);
+		i++;
+	}
 }

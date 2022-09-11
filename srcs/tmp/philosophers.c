@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/10 19:48:32 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 18:52:50 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/10 18:43:24 by yahokari          #+#    #+#             */
+/*   Updated: 2022/09/11 21:17:07 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-void	print_state(enum e_state state)
+int	main(int argc, char **argv)
 {
-	if (state == TAKEN_A_FORK)
-		printf(TAKEN_A_FORK_MESSAGE, 100, 1);
-	else if (state == EATING)
-		printf(EATING_MESSAGE, 100, 1);
-	else if (state == SLEEPING)
-		printf(SLEEPING_MESSAGE, 100, 1);
-	else if (state == THINKING)
-		printf(THINKING_MESSAGE, 100, 1);
-	else if (state == DIED)
-		printf(DIED_MESSAGE, 100, 1);
+	t_vars	vars;
+
+	if (init_setup(argc, argv, &vars))
+		return (1);
+	
+	return (0);
 }

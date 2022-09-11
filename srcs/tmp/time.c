@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   state.c                                            :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/10 19:48:32 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 18:52:50 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
+/*   Updated: 2022/09/11 21:15:12 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-void	print_state(enum e_state state)
+ssize_t	get_time(void)
 {
-	if (state == TAKEN_A_FORK)
-		printf(TAKEN_A_FORK_MESSAGE, 100, 1);
-	else if (state == EATING)
-		printf(EATING_MESSAGE, 100, 1);
-	else if (state == SLEEPING)
-		printf(SLEEPING_MESSAGE, 100, 1);
-	else if (state == THINKING)
-		printf(THINKING_MESSAGE, 100, 1);
-	else if (state == DIED)
-		printf(DIED_MESSAGE, 100, 1);
+	struct timeval	current_time;
+	ssize_t			time_msec;
+
+	if (gettimeofday(&current_time, NULL))
+		return (ERROR);
+	time_msec = current_time.tv_sec * 1000;
+	time_msec += current_time.tv_usec / 1000;
+	return (time_msec);
+}
+
+ssize_t	get_time_diff(size_t old_time, size_t new_time)
+{
+	if (old_time > new_time)
+		return (ERROR);
+	return (new_time - old_time);
 }
