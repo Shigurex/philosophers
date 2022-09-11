@@ -6,14 +6,14 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 19:40:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/10 20:01:55 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/11 00:21:04 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# include <unistd.h>
+# include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
