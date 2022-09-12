@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 21:16:19 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 22:34:22 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 12:54:41 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,22 @@
 void	*thread_func(void *p)
 {
 	t_philos	*philos;
+	t_vars		*vars;
 
 	philos = (t_philos *)p;
+	vars = philos->vars;
 	// if (philos->id % 2 == 0)
-	while (TRUE)
-	{
-		if (philos->state == EATING)
-			;
-		if (philos->state == SLEEPING)
-			;
-		if (philos->state == THINKING)
-			;
-		// if (philos->right_fork == UNUSED)
-		// 	philos->right_fork = USED;
-		// if (philos->left_fork == UNUSED)
-		// 	philos->left_fork = USED;
-	}
+	// 	usleep(200);
+	pthread_mutex_lock(philos->right_fork);
+	pthread_mutex_lock(philos->left_fork);
+	print_state(EATING, philos->id, get_time());
+	usleep(1000 * vars->eat_time);
+	pthread_mutex_unlock(philos->right_fork);
+	pthread_mutex_unlock(philos->left_fork);
+	print_state(SLEEPING, philos->id, get_time());
+	usleep(1000 * vars->sleep_time);
+	print_state(THINKING, philos->id, get_time());
+	return (NULL);
 }
 
 // void	create_forks(t_vars *vars)
@@ -39,9 +39,9 @@ void	*thread_func(void *p)
 	
 // }
 
-pthread_t	*create_threads(t_vars *vars)
+void	create_threads(t_vars *vars)
 {
-	size_t		i;
+	ssize_t		i;
 	pthread_t	*threads;
 
 	threads = malloc(sizeof(pthread_t) * vars->philos_num);
@@ -49,6 +49,12 @@ pthread_t	*create_threads(t_vars *vars)
 	while (i < vars->philos_num)
 	{
 		pthread_create(&threads[i], NULL, &thread_func, vars);
+		i++;
+	}
+	i = 0;
+	while (i < vars->philos_num)
+	{
+		pthread_join(threads[i], NULL);
 		i++;
 	}
 }

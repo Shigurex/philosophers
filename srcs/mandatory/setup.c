@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 19:06:05 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 22:08:51 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 13:03:51 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ static int	init_forks(t_vars *vars)
 {
 	ssize_t	i;
 
-	vars->forks = malloc(sizeof(int) * vars->philos_num);
+	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->philos_num);
 	if (!vars->forks)
 		return (1);
 	i = 0;
 	while (i < vars->philos_num)
 	{
-		vars->forks[i] = UNUSED;
+		pthread_mutex_init(&vars->forks[i], NULL);
 		i++;
 	}
 	return (0);
@@ -87,6 +87,7 @@ static int	init_philos(t_vars *vars)
 		vars->philos[i].id = i + 1;
 		vars->philos[i].right_fork = &vars->forks[i % vars->philos_num];
 		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->philos_num];
+		vars->philos[i].vars = vars;
 		i++;
 	}
 	return (0);
