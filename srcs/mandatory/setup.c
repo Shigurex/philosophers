@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 19:06:05 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 22:08:51 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 00:41:13 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,9 @@ int	init_setup(int argc, char **argv, t_vars *vars)
 	if (init_forks(vars))
 		return (1);
 	if (init_philos(vars))
+	{
+		free(vars->forks);
 		return (1);
+	}
 	return (0);
 }

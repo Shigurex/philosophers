@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 19:40:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 22:32:39 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 00:57:37 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ enum e_state {
 
 typedef struct s_philos {
 	ssize_t			id;
-	enum e_state	state;
-	ssize_t			action_time;
+	ssize_t			last_dish;
 	int				*right_fork;
 	int				*left_fork;
 }	t_philos;
