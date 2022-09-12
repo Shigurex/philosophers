@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 19:40:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 12:37:01 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 15:39:33 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct s_vars {
 
 int			init_setup(int argc, char **argv, t_vars *vars);
 ssize_t		get_time(void);
-ssize_t		get_time_diff(size_t old_time, size_t new_time);
+ssize_t		get_time_diff(ssize_t old_time, ssize_t new_time);
 void		create_threads(t_vars *vars);
 void		print_state(enum e_state state, ssize_t timestamp, ssize_t id);
 

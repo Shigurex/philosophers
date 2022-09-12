@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 19:06:05 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 13:03:51 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 13:54:36 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	init_forks(t_vars *vars)
 	i = 0;
 	while (i < vars->philos_num)
 	{
-		pthread_mutex_init(&vars->forks[i], NULL);
+		pthread_mutex_init(&(vars->forks[i]), NULL);
 		i++;
 	}
 	return (0);
