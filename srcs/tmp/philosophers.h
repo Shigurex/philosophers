@@ -6,10 +6,9 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:07:10 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 23:07:26 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/13 20:34:00 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H

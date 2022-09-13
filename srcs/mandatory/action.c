@@ -1,21 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/12 23:07:39 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/13 20:54:04 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/13 20:49:53 by yahokari          #+#    #+#             */
+/*   Updated: 2022/09/13 20:57:12 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
-
-void	eat_dish(t_philos *philos)
-{
-	
-}
 
 void	*thread_func(void *p)
 {
@@ -30,33 +25,16 @@ void	*thread_func(void *p)
 	{
 		pthread_mutex_lock(philos->right_fork);
 		pthread_mutex_lock(philos->left_fork);
-		print_state(EATING, get_time(), philos->id);
-		usleep(1000 * vars->eat_time);
+		print_state(vars, EATING, get_time(), philos->id);
+		usleep(1000 * vars->time_to_eat);
 		pthread_mutex_unlock(philos->right_fork);
 		pthread_mutex_unlock(philos->left_fork);
-		print_state(SLEEPING, get_time(), philos->id);
-		usleep(1000 * vars->sleep_time);
-		print_state(THINKING, get_time(), philos->id);
+		philos->num_ate++;
+		if (philos->num_ate == vars->num_must_eat)
+			break ;
+		print_state(vars, SLEEPING, get_time(), philos->id);
+		usleep(1000 * vars->time_to_sleep);
+		print_state(vars, THINKING, get_time(), philos->id);
 	}
 	return (NULL);
-}
-
-void	create_threads(t_vars *vars)
-{
-	ssize_t		i;
-	pthread_t	*threads;
-
-	threads = malloc(sizeof(pthread_t) * vars->philos_num);
-	i = 0;
-	while (i < vars->philos_num)
-	{
-		pthread_create(&threads[i], NULL, &thread_func, &vars->philos[i]);
-		i++;
-	}
-	i = 0;
-	while (i < vars->philos_num)
-	{
-		pthread_join(threads[i], NULL);
-		i++;
-	}
 }

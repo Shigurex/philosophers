@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:07:10 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 23:25:51 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/13 21:52:20 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,44 @@
 # define USED 1
 # define UNUSED 0
 
-enum e_state {
+typedef enum e_state {
 	TAKEN_A_FORK,
 	EATING,
 	SLEEPING,
 	THINKING,
 	DIED
-};
+}	t_state;
 
 typedef struct s_philos {
 	ssize_t			id;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
+	ssize_t			last_meal;
+	ssize_t			num_ate;
 	struct s_vars	*vars;
 }	t_philos;
 
 typedef struct s_vars {
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	print;
+	ssize_t			num_philos;
+	ssize_t			time_to_die;
+	ssize_t			time_to_eat;
+	ssize_t			time_to_sleep;
+	int				option_set;
+	ssize_t			num_must_eat;
 }	t_vars;
+
+// <-- setup.c -->
+int		init_setup(int argc, char **argv, t_vars *vars);
+
+// <-- state.c -->
+void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
+
+// <-- utils.c -->
+ssize_t	atoi_positive(const char *str);
+ssize_t	get_timestamp(void);
 
 //typedef struct s_philos {
 //	ssize_t			id;

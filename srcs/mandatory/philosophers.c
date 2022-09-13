@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 18:43:24 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 12:37:41 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/13 20:20:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	main(int argc, char **argv)
 
 	if (init_setup(argc, argv, &vars))
 		return (1);
-	create_threads(&vars);
+	// create_threads(&vars);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:07:33 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 23:07:35 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/13 20:18:23 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static ssize_t	atoi_positive(const char *str)
 static int	check_argument(int argc, char **argv, t_vars *vars)
 {
 	if (argc < 5 || 6 < argc)
-		return (FALSE);
+		return (1);
 	vars->philos_num = atoi_positive(argv[1]);
 	vars->die_time = atoi_positive(argv[2]);
 	vars->eat_time = atoi_positive(argv[3]);
@@ -53,7 +53,7 @@ static int	check_argument(int argc, char **argv, t_vars *vars)
 	}
 	if (vars->philos_num == ERROR || vars->die_time == ERROR
 		|| vars->eat_time == ERROR || vars->sleep_time == ERROR
-		|| (vars->option_arg == TRUE && vars->eat_num == ERROR))
+		|| vars->eat_num == ERROR)
 		return (1);
 	return (0);
 }

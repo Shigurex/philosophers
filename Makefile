@@ -2,9 +2,9 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS_NAME = mandatory/philosophers.c \
 	mandatory/setup.c \
-	mandatory/threads.c \
-	mandatory/state.c \
-	mandatory/time.c
+	# mandatory/threads.c \
+	# mandatory/state.c \
+	# mandatory/time.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))

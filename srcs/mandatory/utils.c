@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 23:30:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/13 20:31:38 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,32 @@ ssize_t	get_timestamp(void)
 	time_msec = current_time.tv_sec * 1000;
 	time_msec += current_time.tv_usec / 1000;
 	return (time_msec);
+}
+
+ssize_t	atoi_positive(const char *str)
+{
+	size_t	i;
+	ssize_t	value;
+
+	i = 0;
+	value = 0;
+	if (str[i] == '+')
+		i++;
+	if (!str[i])
+		return (ERROR);
+	while (str[i])
+	{
+		if ('0' <= str[i] && str[i] <= '9')
+		{
+			value = 10 * value + (str[i] - '0');
+			if (value > (ssize_t)INT_MAX)
+				return (ERROR);
+			i++;
+		}
+		else
+			return (ERROR);
+	}
+	return (value);
 }
 
 //ssize_t	get_time_diff(ssize_t old_timestamp, ssize_t new_timestamp)
