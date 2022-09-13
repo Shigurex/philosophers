@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/11 19:06:05 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 21:08:52 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/12 23:07:33 by yahokari          #+#    #+#             */
+/*   Updated: 2022/09/12 23:07:35 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,51 @@ static int	check_argument(int argc, char **argv, t_vars *vars)
 	return (0);
 }
 
+static int	init_forks(t_vars *vars)
+{
+	ssize_t	i;
+
+	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->philos_num);
+	if (!vars->forks)
+		return (1);
+	i = 0;
+	while (i < vars->philos_num)
+	{
+		pthread_mutex_init(&(vars->forks[i]), NULL);
+		i++;
+	}
+	return (0);
+}
+
+static int	init_philos(t_vars *vars)
+{
+	ssize_t	i;
+
+	vars->philos = malloc(sizeof(t_philos) * vars->philos_num);
+	if (!vars->philos)
+		return (1);
+	i = 0;
+	while (i < vars->philos_num)
+	{
+		vars->philos[i].id = i + 1;
+		vars->philos[i].right_fork = &vars->forks[i % vars->philos_num];
+		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->philos_num];
+		vars->philos[i].vars = vars;
+		i++;
+	}
+	return (0);
+}
+
 int	init_setup(int argc, char **argv, t_vars *vars)
 {
 	if (check_argument(argc, argv, vars))
 		return (1);
+	if (init_forks(vars))
+		return (1);
+	if (init_philos(vars))
+	{
+		free(vars->forks);
+		return (1);
+	}
 	return (0);
 }

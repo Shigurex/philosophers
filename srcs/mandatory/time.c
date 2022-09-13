@@ -6,13 +6,13 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/11 21:15:12 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/12 23:30:11 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-ssize_t	get_time(void)
+ssize_t	get_timestamp(void)
 {
 	struct timeval	current_time;
 	ssize_t			time_msec;
@@ -24,9 +24,9 @@ ssize_t	get_time(void)
 	return (time_msec);
 }
 
-ssize_t	get_time_diff(size_t old_time, size_t new_time)
-{
-	if (old_time > new_time)
-		return (ERROR);
-	return (new_time - old_time);
-}
+//ssize_t	get_time_diff(ssize_t old_timestamp, ssize_t new_timestamp)
+//{
+//	if (old_timestamp > new_timestamp)
+//		return (ERROR);
+//	return (new_timestamp - old_timestamp);
+//}
