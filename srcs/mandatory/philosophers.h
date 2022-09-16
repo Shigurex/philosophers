@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:07:10 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/13 21:52:20 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/14 22:41:57 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@
 # define USED 1
 # define UNUSED 0
 
+# define MILISECOND 1000
+
 typedef enum e_state {
 	TAKEN_A_FORK,
 	EATING,
@@ -46,6 +48,7 @@ typedef struct s_philos {
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	ssize_t			last_meal;
+	ssize_t			last_action;
 	ssize_t			num_ate;
 	struct s_vars	*vars;
 }	t_philos;
@@ -54,6 +57,8 @@ typedef struct s_vars {
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
+	pthread_t		*threads;
+	pthread_t		observer;
 	ssize_t			num_philos;
 	ssize_t			time_to_die;
 	ssize_t			time_to_eat;
@@ -61,6 +66,9 @@ typedef struct s_vars {
 	int				option_set;
 	ssize_t			num_must_eat;
 }	t_vars;
+
+// <-- action.c -->
+int		create_threads(t_vars *vars);
 
 // <-- setup.c -->
 int		init_setup(int argc, char **argv, t_vars *vars);
@@ -71,6 +79,7 @@ void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 // <-- utils.c -->
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
+void	wait_certain_time(ssize_t time_end);
 
 //typedef struct s_philos {
 //	ssize_t			id;

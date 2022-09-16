@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:26:51 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/13 20:46:12 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/14 22:56:50 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ static int	init_philos(t_vars *vars)
 
 	vars->philos = malloc(sizeof(t_philos) * vars->num_philos);
 	if (!vars->philos)
+	{
+		free(vars->forks);
 		return (1);
+	}
 	i = 0;
 	while (i < vars->num_philos)
 	{
@@ -70,6 +73,26 @@ static int	init_philos(t_vars *vars)
 	return (0);
 }
 
+static int	init_threads(t_vars *vars)
+{
+	vars->threads = malloc(sizeof(pthread_t) * vars->num_philos);
+	if (!vars->threads)
+	{
+		free(vars->forks);
+		free(vars->philos);
+		return (1);
+	}
+	vars->observer = malloc(sizeof(pthread_t));
+	if (!vars->observer)
+	{
+		free(vars->forks);
+		free(vars->philos);
+		free(vars->threads);
+		return (1);
+	}
+	return (0);
+}
+
 int	init_setup(int argc, char **argv, t_vars *vars)
 {
 	if (check_argument(argc, argv, vars))
@@ -77,9 +100,8 @@ int	init_setup(int argc, char **argv, t_vars *vars)
 	if (init_mutexes(vars))
 		return (1);
 	if (init_philos(vars))
-	{
-		free(vars->forks);
 		return (1);
-	}
+	if (init_threads(vars))
+		return (1);
 	return (0);
 }

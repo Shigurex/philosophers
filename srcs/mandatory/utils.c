@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/13 20:31:38 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/09/14 00:25:42 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,15 @@ ssize_t	get_timestamp(void)
 	time_msec = current_time.tv_sec * 1000;
 	time_msec += current_time.tv_usec / 1000;
 	return (time_msec);
+}
+
+void	wait_certain_time(ssize_t time_end)
+{
+	ssize_t	timestamp;
+
+	timestamp = get_timestamp();
+	while (timestamp < time_end)
+		timestamp = get_timestamp();
 }
 
 ssize_t	atoi_positive(const char *str)
