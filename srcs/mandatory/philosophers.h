@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:07:10 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/16 14:48:41 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/04 19:38:50 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include	<stdio.h>
 # include	<stdlib.h>
 # include	<limits.h>
+# include	<stdbool.h>
 # include	<sys/time.h>
 
 # define TAKEN_A_FORK_MESSAGE "%zu %zu has taken a fork\n"
@@ -41,7 +42,7 @@ typedef enum e_state {
 	SLEEPING,
 	THINKING,
 	DIED,
-	NONE
+	INIT
 }	t_state;
 
 typedef struct s_philos {
@@ -65,42 +66,28 @@ typedef struct s_vars {
 	ssize_t			time_to_die;
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;
-	int				option_set;
+	bool			option_set;
 	ssize_t			num_must_eat;
+	ssize_t			initial_time;
 }	t_vars;
 
-// <-- action.c -->
-int		create_threads(t_vars *vars);
+/* <-- threads.c --> */
+int		exec_action(t_vars *vars);
 
-// <-- setup.c -->
+/* <-- action.c --> */
+void	*act_philos(void *p);
+void	*observe_philos(void *p);
+
+/* <-- setup.c --> */
 int		init_setup(int argc, char **argv, t_vars *vars);
 
-// <-- state.c -->
+/* <-- state.c --> */
+void	record_action(t_vars *vars, t_philos *philos, t_state state);
 void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 
-// <-- utils.c -->
+/* <-- utils.c --> */
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
-
-//typedef struct s_philos {
-//	ssize_t			id;
-//	enum e_state	state;
-//	ssize_t			action_time;
-//	pthread_mutex_t	*right_fork;
-//	pthread_mutex_t	*left_fork;
-//	struct s_vars	*vars;
-//}	t_philos;
-
-//typedef struct s_vars {
-//	ssize_t			philos_num;
-//	ssize_t			die_time;
-//	ssize_t			eat_time;
-//	ssize_t			sleep_time;
-//	int				option_arg;
-//	ssize_t			eat_num;
-//	pthread_mutex_t	*forks;
-//	t_philos		*philos;
-//}	t_vars;
 
 #endif

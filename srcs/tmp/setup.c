@@ -5,72 +5,48 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/12 23:07:33 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/13 20:18:23 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/12 23:26:51 by yahokari          #+#    #+#             */
+/*   Updated: 2022/10/20 09:45:41 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-static ssize_t	atoi_positive(const char *str)
-{
-	size_t	i;
-	ssize_t	value;
-
-	i = 0;
-	value = 0;
-	if (str[i] == '+')
-		i++;
-	if (!str[i])
-		return (ERROR);
-	while (str[i])
-	{
-		if ('0' <= str[i] && str[i] <= '9')
-		{
-			value = 10 * value + (str[i] - '0');
-			if (value > (ssize_t)INT_MAX)
-				return (ERROR);
-			i++;
-		}
-		else
-			return (ERROR);
-	}
-	return (value);
-}
-
 static int	check_argument(int argc, char **argv, t_vars *vars)
 {
-	if (argc < 5 || 6 < argc)
+	if (argc == 5)
+		vars->option_set = FALSE;
+	else if (argc == 6)
+		vars->option_set = TRUE;
+	else
 		return (1);
-	vars->philos_num = atoi_positive(argv[1]);
-	vars->die_time = atoi_positive(argv[2]);
-	vars->eat_time = atoi_positive(argv[3]);
-	vars->sleep_time = atoi_positive(argv[4]);
-	if (argc == 6)
-	{
-		vars->option_arg = TRUE;
-		vars->eat_num = atoi_positive(argv[5]);
-	}
-	if (vars->philos_num == ERROR || vars->die_time == ERROR
-		|| vars->eat_time == ERROR || vars->sleep_time == ERROR
-		|| vars->eat_num == ERROR)
+	vars->num_philos = atoi_positive(argv[1]);
+	vars->time_to_die = atoi_positive(argv[2]);
+	vars->time_to_eat = atoi_positive(argv[3]);
+	vars->time_to_sleep = atoi_positive(argv[4]);
+	if (vars->option_set == TRUE)
+		vars->num_must_eat = atoi_positive(argv[5]);
+	if (vars->num_philos < 1 || vars->time_to_die < 1
+		|| vars->time_to_eat < 1 || vars->time_to_sleep < 1
+		|| (vars->option_set == TRUE && vars->num_must_eat < 1))
 		return (1);
 	return (0);
 }
 
-static int	init_forks(t_vars *vars)
+static int	init_mutexes(t_vars *vars)
 {
 	ssize_t	i;
 
-	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->philos_num);
+	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->num_philos);
 	if (!vars->forks)
 		return (1);
 	i = 0;
-	while (i < vars->philos_num)
+	while (i < vars->num_philos)
 	{
 		pthread_mutex_init(&(vars->forks[i]), NULL);
 		i++;
 	}
+	pthread_mutex_init(&(vars->print), NULL);
 	return (0);
 }
 
@@ -78,18 +54,43 @@ static int	init_philos(t_vars *vars)
 {
 	ssize_t	i;
 
-	vars->philos = malloc(sizeof(t_philos) * vars->philos_num);
+	vars->philos = malloc(sizeof(t_philos) * vars->num_philos);
 	if (!vars->philos)
+	{
+		free(vars->forks);
 		return (1);
+	}
 	i = 0;
-	while (i < vars->philos_num)
+	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
-		vars->philos[i].right_fork = &vars->forks[i % vars->philos_num];
-		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->philos_num];
+		vars->philos[i].right_fork = &vars->forks[i % vars->num_philos];
+		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
+		vars->philos[i].status = NONE;
+		vars->philos[i].num_ate = 0;
 		vars->philos[i].vars = vars;
 		i++;
 	}
+	return (0);
+}
+
+static int	init_threads(t_vars *vars)
+{
+	vars->threads = malloc(sizeof(pthread_t) * vars->num_philos);
+	if (!vars->threads)
+	{
+		free(vars->forks);
+		free(vars->philos);
+		return (1);
+	}
+	// vars->observer = malloc(sizeof(pthread_t));
+	// if (!vars->observer)
+	// {
+	// 	free(vars->forks);
+	// 	free(vars->philos);
+	// 	free(vars->threads);
+	// 	return (1);
+	// }
 	return (0);
 }
 
@@ -97,12 +98,11 @@ int	init_setup(int argc, char **argv, t_vars *vars)
 {
 	if (check_argument(argc, argv, vars))
 		return (1);
-	if (init_forks(vars))
+	if (init_mutexes(vars))
 		return (1);
 	if (init_philos(vars))
-	{
-		free(vars->forks);
 		return (1);
-	}
+	if (init_threads(vars))
+		return (1);
 	return (0);
 }

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/12 15:39:23 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/10/20 09:44:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-ssize_t	get_time(void)
+ssize_t	get_timestamp(void)
 {
 	struct timeval	current_time;
 	ssize_t			time_msec;
@@ -24,9 +24,41 @@ ssize_t	get_time(void)
 	return (time_msec);
 }
 
-ssize_t	get_time_diff(ssize_t old_time, ssize_t new_time)
+void	wait_certain_time(ssize_t time_end)
 {
-	if (old_time > new_time)
-		return (ERROR);
-	return (new_time - old_time);
+	while (get_timestamp() < time_end)
+		usleep(100);
 }
+
+ssize_t	atoi_positive(const char *str)
+{
+	size_t	i;
+	ssize_t	value;
+
+	i = 0;
+	value = 0;
+	if (str[i] == '+')
+		i++;
+	if (!str[i])
+		return (ERROR);
+	while (str[i])
+	{
+		if ('0' <= str[i] && str[i] <= '9')
+		{
+			value = 10 * value + (str[i] - '0');
+			if (value > (ssize_t)INT_MAX)
+				return (ERROR);
+			i++;
+		}
+		else
+			return (ERROR);
+	}
+	return (value);
+}
+
+//ssize_t	get_time_diff(ssize_t old_timestamp, ssize_t new_timestamp)
+//{
+//	if (old_timestamp > new_timestamp)
+//		return (ERROR);
+//	return (new_timestamp - old_timestamp);
+//}

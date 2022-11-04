@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/09/16 15:08:06 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/04 19:56:18 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	wait_certain_time(ssize_t time_end)
 	ssize_t	timestamp;
 
 	timestamp = get_timestamp();
-	while (get_timestamp() < time_end)
+	while (timestamp < time_end)
 	{
+		usleep(300);
 		timestamp = get_timestamp();
-		usleep(100);
 	}
 }
 
@@ -59,12 +59,7 @@ ssize_t	atoi_positive(const char *str)
 		else
 			return (ERROR);
 	}
+	if (value == 0)
+		return (ERROR);
 	return (value);
 }
-
-//ssize_t	get_time_diff(ssize_t old_timestamp, ssize_t new_timestamp)
-//{
-//	if (old_timestamp > new_timestamp)
-//		return (ERROR);
-//	return (new_timestamp - old_timestamp);
-//}

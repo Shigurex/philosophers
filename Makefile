@@ -1,15 +1,16 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g -fsanitize=thread
 SRCS_NAME = mandatory/philosophers.c \
 	mandatory/setup.c \
 	mandatory/action.c \
-	mandatory/state.c \
+	mandatory/threads.c \
+	mandatory/print.c \
 	mandatory/utils.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))
 OBJS = $(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
-NAME = philosophers
+NAME = philo
 
 all: $(OBJDIR) $(NAME)
 
