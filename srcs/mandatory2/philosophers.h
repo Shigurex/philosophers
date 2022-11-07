@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 20:06:14 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 18:52:53 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_philos {
 	pthread_mutex_t	*left_fork;
 	t_state			status;
 	ssize_t			last_meal;
+	ssize_t			last_action;
 	ssize_t			num_ate;
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;

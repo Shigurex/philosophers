@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:54:54 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 21:13:16 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 19:21:03 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	create_threads(t_vars *vars)
 {
 	ssize_t	i;
+	ssize_t	timestamp;
 
 	i = 0;
 	pthread_mutex_lock(&vars->check);
@@ -24,6 +25,7 @@ static void	create_threads(t_vars *vars)
 		i++;
 	}
 	vars->initial_time = get_timestamp();
+	printf("%zd\n", vars->initial_time);
 	pthread_mutex_unlock(&vars->check);
 	pthread_create(&vars->observer, NULL, &observe_philos, vars);
 }
@@ -57,6 +59,8 @@ static void	destroy_mutex(t_vars *vars)
 
 void	exec_action(t_vars *vars)
 {
+	ssize_t	timestamp;
+
 	create_threads(vars);
 	delete_threads(vars);
 	destroy_mutex(vars);

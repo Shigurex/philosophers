@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/12 23:26:51 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 18:59:20 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/10/20 09:45:41 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,14 @@ static int	init_threads(t_vars *vars)
 		free(vars->philos);
 		return (1);
 	}
+	// vars->observer = malloc(sizeof(pthread_t));
+	// if (!vars->observer)
+	// {
+	// 	free(vars->forks);
+	// 	free(vars->philos);
+	// 	free(vars->threads);
+	// 	return (1);
+	// }
 	return (0);
 }
 

@@ -6,28 +6,11 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 18:44:12 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/10/20 09:44:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
-
-void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id)
-{
-	pthread_mutex_lock(&vars->print);
-	timestamp = timestamp - vars->initial_time;
-	if (state == TAKEN_A_FORK)
-		printf(TAKEN_A_FORK_MESSAGE, timestamp, id);
-	else if (state == EATING)
-		printf(EATING_MESSAGE, timestamp, id);
-	else if (state == SLEEPING)
-		printf(SLEEPING_MESSAGE, timestamp, id);
-	else if (state == THINKING)
-		printf(THINKING_MESSAGE, timestamp, id);
-	else if (state == DIED)
-		printf(DIED_MESSAGE, timestamp, id);
-	pthread_mutex_unlock(&vars->print);
-}
 
 ssize_t	get_timestamp(void)
 {
@@ -38,18 +21,6 @@ ssize_t	get_timestamp(void)
 		return (ERROR);
 	time_msec = current_time.tv_sec * 1000;
 	time_msec += current_time.tv_usec / 1000;
-	return (time_msec);
-}
-
-ssize_t	get_accuratetime(void)
-{
-	struct timeval	current_time;
-	ssize_t			time_msec;
-
-	if (gettimeofday(&current_time, NULL))
-		return (ERROR);
-	time_msec = current_time.tv_sec * 1000000;
-	time_msec += current_time.tv_usec;
 	return (time_msec);
 }
 
@@ -82,7 +53,12 @@ ssize_t	atoi_positive(const char *str)
 		else
 			return (ERROR);
 	}
-	if (value == 0)
-		return (ERROR);
 	return (value);
 }
+
+//ssize_t	get_time_diff(ssize_t old_timestamp, ssize_t new_timestamp)
+//{
+//	if (old_timestamp > new_timestamp)
+//		return (ERROR);
+//	return (new_timestamp - old_timestamp);
+//}
