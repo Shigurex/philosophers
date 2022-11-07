@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 20:06:14 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:32:31 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ typedef enum e_state {
 	SLEEPING,
 	THINKING,
 	DIED,
-	INIT,
-	ACTIVE
+	INIT
 }	t_state;
 
 typedef struct s_philos {
