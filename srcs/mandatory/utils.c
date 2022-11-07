@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 18:44:12 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:45:18 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,6 @@ ssize_t	get_timestamp(void)
 		return (ERROR);
 	time_msec = current_time.tv_sec * 1000;
 	time_msec += current_time.tv_usec / 1000;
-	return (time_msec);
-}
-
-ssize_t	get_accuratetime(void)
-{
-	struct timeval	current_time;
-	ssize_t			time_msec;
-
-	if (gettimeofday(&current_time, NULL))
-		return (ERROR);
-	time_msec = current_time.tv_sec * 1000000;
-	time_msec += current_time.tv_usec;
 	return (time_msec);
 }
 

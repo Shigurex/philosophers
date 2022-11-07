@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror
 SRCS_NAME = mandatory/main.c \
 	mandatory/setup.c \
 	mandatory/execute.c \

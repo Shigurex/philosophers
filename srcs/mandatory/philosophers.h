@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 21:32:31 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:45:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	*observe_philos(void *p);
 void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
-ssize_t	get_accuratetime(void);
 void	wait_certain_time(ssize_t time_end);
 
 #endif
