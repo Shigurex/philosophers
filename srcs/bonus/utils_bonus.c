@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 15:16:01 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:00:04 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"philosophers.h"
+#include	"philosophers_bonus.h"
 
 void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id)
 {
-	pthread_mutex_lock(&vars->print);
 	timestamp = timestamp - vars->initial_time;
 	if (state == TAKEN_A_FORK)
 		printf(TAKEN_A_FORK_MESSAGE, timestamp, id);
@@ -26,7 +25,6 @@ void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id)
 		printf(THINKING_MESSAGE, timestamp, id);
 	else if (state == DIED)
 		printf(DIED_MESSAGE, timestamp, id);
-	pthread_mutex_unlock(&vars->print);
 }
 
 ssize_t	get_timestamp(void)

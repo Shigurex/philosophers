@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 15:34:14 by yahokari         ###   ########.fr       */
+/*   Created: 2022/11/07 15:48:44 by yahokari          #+#    #+#             */
+/*   Updated: 2022/11/07 17:22:14 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
-# include	<pthread.h>
+# include	<semaphore.h>
 # include	<unistd.h>
 # include	<stdio.h>
 # include	<stdlib.h>
@@ -27,14 +27,14 @@
 # define THINKING_MESSAGE "%zu %zu is thinking\n"
 # define DIED_MESSAGE "%zu %zu died\n"
 
+# define CHILD 0
+
 # define TRUE 1
 # define FALSE 0
 # define ERROR -1
 
 # define USED 1
 # define UNUSED 0
-
-# define MILISECOND 1000
 
 typedef enum e_state {
 	TAKEN_A_FORK,
@@ -47,9 +47,8 @@ typedef enum e_state {
 }	t_state;
 
 typedef struct s_philos {
+	pid_t			pid;
 	ssize_t			id;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	*left_fork;
 	t_state			status;
 	ssize_t			last_meal;
 	ssize_t			last_action;
@@ -60,34 +59,24 @@ typedef struct s_philos {
 }	t_philos;
 
 typedef struct s_vars {
-	t_philos		*philos;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	print;
-	pthread_mutex_t	*check;
-	pthread_t		*threads;
-	pthread_t		observer;
-	ssize_t			num_philos;
-	ssize_t			time_to_die;
-	ssize_t			time_to_eat;
-	ssize_t			time_to_sleep;
-	bool			option_set;
-	ssize_t			num_must_eat;
-	ssize_t			initial_time;
+	t_philos	*philos;
+	sem_t		*forks;
+	ssize_t		num_philos;
+	ssize_t		time_to_die;
+	ssize_t		time_to_eat;
+	ssize_t		time_to_sleep;
+	bool		option_set;
+	ssize_t		num_must_eat;
+	ssize_t		initial_time;
 }	t_vars;
 
-/* <-- setup.c --> */
+/* <-- setup_bonus.c --> */
 int		init_setup(int argc, char **argv, t_vars *vars);
 
-/* <-- execute.c --> */
+/* <-- execute_bonus.c --> */
 void	exec_action(t_vars *vars);
 
-/* <-- philos.c --> */
-void	*act_philos(void *p);
-
-/* <-- observer.c --> */
-void	*observe_philos(void *p);
-
-/* <-- utils.c --> */
+/* <-- utils_bonus.c --> */
 void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);

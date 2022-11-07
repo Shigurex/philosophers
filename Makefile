@@ -1,10 +1,10 @@
 CC = cc
 CFLAGS = -g -fsanitize=thread
-SRCS_NAME = mandatory/philosophers.c \
+SRCS_NAME = mandatory/main.c \
 	mandatory/setup.c \
-	mandatory/action.c \
-	mandatory/threads.c \
-	mandatory/print.c \
+	mandatory/execute.c \
+	mandatory/philos.c \
+	mandatory/observer.c \
 	mandatory/utils.c
 SRCDIR = srcs
 OBJDIR = objs

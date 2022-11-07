@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 15:34:14 by yahokari         ###   ########.fr       */
+/*   Created: 2022/09/12 23:07:10 by yahokari          #+#    #+#             */
+/*   Updated: 2022/11/04 19:38:50 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ typedef enum e_state {
 	SLEEPING,
 	THINKING,
 	DIED,
-	INIT,
-	ACTIVE
+	INIT
 }	t_state;
 
 typedef struct s_philos {
@@ -54,8 +53,6 @@ typedef struct s_philos {
 	ssize_t			last_meal;
 	ssize_t			last_action;
 	ssize_t			num_ate;
-	ssize_t			time_to_eat;
-	ssize_t			time_to_sleep;
 	struct s_vars	*vars;
 }	t_philos;
 
@@ -63,7 +60,6 @@ typedef struct s_vars {
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
-	pthread_mutex_t	*check;
 	pthread_t		*threads;
 	pthread_t		observer;
 	ssize_t			num_philos;
@@ -75,20 +71,21 @@ typedef struct s_vars {
 	ssize_t			initial_time;
 }	t_vars;
 
+/* <-- threads.c --> */
+int		exec_action(t_vars *vars);
+
+/* <-- action.c --> */
+void	*act_philos(void *p);
+void	*observe_philos(void *p);
+
 /* <-- setup.c --> */
 int		init_setup(int argc, char **argv, t_vars *vars);
 
-/* <-- execute.c --> */
-void	exec_action(t_vars *vars);
-
-/* <-- philos.c --> */
-void	*act_philos(void *p);
-
-/* <-- observer.c --> */
-void	*observe_philos(void *p);
+/* <-- state.c --> */
+void	record_action(t_vars *vars, t_philos *philos, t_state state);
+void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 
 /* <-- utils.c --> */
-void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);

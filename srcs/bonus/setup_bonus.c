@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup.c                                            :+:      :+:    :+:   */
+/*   setup_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 15:35:15 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 17:27:02 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"philosophers.h"
+#include	"philosophers_bonus.h"
 
-static int	check_argument(int argc, char **argv, t_vars *vars)
+static void	check_argument(int argc, char **argv, t_vars *vars)
 {
 	if (argc == 5)
 		vars->option_set = false;
 	else if (argc == 6)
 		vars->option_set = true;
 	else
-		return (1);
+		exit(EXIT_FAILURE);
 	vars->num_philos = atoi_positive(argv[1]);
 	vars->time_to_die = atoi_positive(argv[2]);
 	vars->time_to_eat = atoi_positive(argv[3]);
@@ -29,32 +29,17 @@ static int	check_argument(int argc, char **argv, t_vars *vars)
 	if (vars->num_philos == ERROR || vars->time_to_die == ERROR
 		|| vars->time_to_eat == ERROR || vars->time_to_sleep == ERROR
 		|| (vars->option_set == true && vars->num_must_eat == ERROR))
-		return (1);
-	return (0);
+		exit(EXIT_FAILURE);
 }
 
-static int	init_mutexes(t_vars *vars)
+static void	init_semaphore(t_vars *vars)
 {
-	ssize_t	i;
-
-	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->num_philos);
-	if (!vars->forks)
-		return (1);
-	vars->check = malloc(sizeof(pthread_mutex_t));
-	if (!vars->check)
-		return (1);
-	i = 0;
-	while (i < vars->num_philos)
-	{
-		pthread_mutex_init(&vars->forks[i], NULL);
-		i++;
-	}
-	pthread_mutex_init(&vars->print, NULL);
-	pthread_mutex_init(vars->check, NULL);
-	return (0);
+	vars->forks = sem_open("a", O_CREAT, 0644, 1);
+	if (vars->forks == SEM_FAILED)
+		exit(EXIT_FAILURE);
 }
 
-static int	init_philos(t_vars *vars)
+static void	init_philos(t_vars *vars)
 {
 	ssize_t	i;
 
@@ -62,14 +47,12 @@ static int	init_philos(t_vars *vars)
 	if (!vars->philos)
 	{
 		free(vars->forks);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
 	i = 0;
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
-		vars->philos[i].right_fork = &vars->forks[i];
-		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
 		vars->philos[i].status = INIT;
 		vars->philos[i].num_ate = 0;
 		vars->philos[i].time_to_eat = vars->time_to_eat;
@@ -77,30 +60,12 @@ static int	init_philos(t_vars *vars)
 		vars->philos[i].vars = vars;
 		i++;
 	}
-	return (0);
-}
-
-static int	init_threads(t_vars *vars)
-{
-	vars->threads = malloc(sizeof(pthread_t) * vars->num_philos);
-	if (!vars->threads)
-	{
-		free(vars->forks);
-		free(vars->philos);
-		return (1);
-	}
-	return (0);
 }
 
 int	init_setup(int argc, char **argv, t_vars *vars)
 {
-	if (check_argument(argc, argv, vars))
-		return (1);
-	if (init_mutexes(vars))
-		return (1);
-	if (init_philos(vars))
-		return (1);
-	if (init_threads(vars))
-		return (1);
+	check_argument(argc, argv, vars);
+	init_philos(vars);
+	init_semaphore(vars);
 	return (0);
 }

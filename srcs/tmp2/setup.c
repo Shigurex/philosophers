@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 15:35:15 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/04 18:22:14 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,13 @@ static int	init_mutexes(t_vars *vars)
 	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->num_philos);
 	if (!vars->forks)
 		return (1);
-	vars->check = malloc(sizeof(pthread_mutex_t));
-	if (!vars->check)
-		return (1);
 	i = 0;
 	while (i < vars->num_philos)
 	{
-		pthread_mutex_init(&vars->forks[i], NULL);
+		pthread_mutex_init(&(vars->forks[i]), NULL);
 		i++;
 	}
-	pthread_mutex_init(&vars->print, NULL);
-	pthread_mutex_init(vars->check, NULL);
+	pthread_mutex_init(&(vars->print), NULL);
 	return (0);
 }
 
@@ -68,12 +64,10 @@ static int	init_philos(t_vars *vars)
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
-		vars->philos[i].right_fork = &vars->forks[i];
+		vars->philos[i].right_fork = &vars->forks[i % vars->num_philos];
 		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
 		vars->philos[i].status = INIT;
 		vars->philos[i].num_ate = 0;
-		vars->philos[i].time_to_eat = vars->time_to_eat;
-		vars->philos[i].time_to_sleep = vars->time_to_sleep;
 		vars->philos[i].vars = vars;
 		i++;
 	}
