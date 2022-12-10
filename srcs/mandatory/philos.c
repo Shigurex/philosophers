@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:09:04 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:10:51 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:10:13 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ static void	eat_meal(t_philos *philos)
 	pthread_mutex_lock(philos->left_fork);
 	print_state(&philos->print, TAKEN_A_FORK, get_timestamp(), philos->id);
 	eat_start = get_timestamp();
-	philos->last_meal = eat_start;
+	pthread_mutex_lock(philos->monitor_check);
+	*philos->last_meal = eat_start;
+	pthread_mutex_unlock(philos->monitor_check);
 	print_state(&philos->print, EATING, eat_start, philos->id);
 	wait_certain_time(eat_start + philos->time_to_eat);
-	philos->num_ate++;
+	pthread_mutex_lock(philos->monitor_check);
+	(*philos->num_ate)++;
+	pthread_mutex_unlock(philos->monitor_check);
 	pthread_mutex_unlock(philos->right_fork);
 	pthread_mutex_unlock(philos->left_fork);
 }

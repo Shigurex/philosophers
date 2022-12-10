@@ -6,22 +6,22 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:24:33 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:51:04 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:10:23 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-static bool	check_death(t_vars *vars, t_philos *philos)
+static bool	check_death(t_vars *vars, ssize_t i)
 {
 	ssize_t		time_of_death;
 	ssize_t		timestamp;
 
 	timestamp = get_timestamp();
-	time_of_death = philos->last_meal + vars->time_to_die;
+	time_of_death = vars->last_meal[i] + vars->time_to_die;
 	if (timestamp >= time_of_death)
 	{
-		print_state(&philos->print, DIED, timestamp, philos->id);
+		print_state(&vars->print, DIED, timestamp, i + 1);
 		return (true);
 	}
 	return (false);
@@ -39,10 +39,10 @@ static bool	is_action_finished(t_vars *vars)
 	{
 		pthread_mutex_lock(&vars->monitor_check[i]);
 		philos = &vars->philos[i];
-		if (check_death(vars, philos))
+		if (check_death(vars, i))
 			return (true);
 		if (vars->option_set == false
-			|| philos->num_ate < vars->num_must_eat)
+			|| vars->num_ate[i] < vars->num_must_eat)
 			all_ate_flag = false;
 		pthread_mutex_unlock(&vars->monitor_check[i]);
 		i++;

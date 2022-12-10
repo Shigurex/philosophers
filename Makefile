@@ -15,7 +15,7 @@ NAME = philo
 all: $(OBJDIR) $(NAME)
 
 $(OBJDIR):
-	mkdir $(shell find $(SRCDIR) -type d | sed 's/^$(SRCDIR)/$(OBJDIR)/g')
+	mkdir -p $(shell find $(SRCDIR) -type d | sed 's/^$(SRCDIR)/$(OBJDIR)/g')
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)

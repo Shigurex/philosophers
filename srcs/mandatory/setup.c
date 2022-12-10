@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:50:25 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:08:21 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,18 @@ static int	init_philos(t_vars *vars)
 		free(vars->forks);
 		return (1);
 	}
+	vars->last_meal = malloc(sizeof(ssize_t) * vars->num_philos);
+	vars->num_ate = malloc(sizeof(ssize_t) * vars->num_philos);
 	i = 0;
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
 		vars->philos[i].right_fork = &vars->forks[i];
 		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
-		vars->philos[i].last_meal = vars->initial_time;
-		vars->philos[i].num_ate = 0;
+		vars->last_meal[i] = vars->initial_time;
+		vars->philos[i].last_meal = &vars->last_meal[i];
+		vars->num_ate[i] = 0;
+		vars->philos[i].num_ate = &vars->num_ate[i];
 		vars->philos[i].time_to_eat = vars->time_to_eat;
 		vars->philos[i].time_to_sleep = vars->time_to_sleep;
 		vars->philos[i].initial_time = vars->initial_time;
