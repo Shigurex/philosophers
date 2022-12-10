@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:08:21 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:25:52 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static int	init_mutexes(t_vars *vars)
 		pthread_mutex_init(&vars->monitor_check[i], NULL);
 		i++;
 	}
+	// vars->print = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&vars->print, NULL);
 	//pthread_mutex_init(&vars->monitor_check, NULL);
 	return (0);

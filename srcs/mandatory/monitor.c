@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:24:33 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:10:23 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 20:40:27 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ static bool	check_death(t_vars *vars, ssize_t i)
 	ssize_t		timestamp;
 
 	timestamp = get_timestamp();
+	pthread_mutex_lock(&vars->monitor_check[i]);
 	time_of_death = vars->last_meal[i] + vars->time_to_die;
+	pthread_mutex_unlock(&vars->monitor_check[i]);
 	if (timestamp >= time_of_death)
 	{
 		print_state(&vars->print, DIED, timestamp, i + 1);
@@ -30,17 +32,15 @@ static bool	check_death(t_vars *vars, ssize_t i)
 static bool	is_action_finished(t_vars *vars)
 {
 	ssize_t		i;
-	t_philos	*philos;
 	bool		all_ate_flag;
 
 	i = 0;
 	all_ate_flag = true;
 	while (i < vars->num_philos)
 	{
-		pthread_mutex_lock(&vars->monitor_check[i]);
-		philos = &vars->philos[i];
 		if (check_death(vars, i))
 			return (true);
+		pthread_mutex_lock(&vars->monitor_check[i]);
 		if (vars->option_set == false
 			|| vars->num_ate[i] < vars->num_must_eat)
 			all_ate_flag = false;
