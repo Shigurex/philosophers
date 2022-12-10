@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:49:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 19:47:28 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ typedef struct s_philos {
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 	t_state			status;
-	ssize_t			last_meal;
-	ssize_t			num_ate;
+	ssize_t			*last_meal;
+	ssize_t			*num_ate;
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;
 	ssize_t			initial_time;
@@ -73,6 +73,8 @@ typedef struct s_vars {
 	ssize_t			initial_time;
 	pthread_mutex_t	print;
 	pthread_mutex_t	*monitor_check;
+	ssize_t			*last_meal;
+	ssize_t			*num_ate;
 }	t_vars;
 
 /* setup.c */

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:49:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/10 18:25:30 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_philos {
 	ssize_t			time_to_sleep;
 	ssize_t			initial_time;
 	pthread_mutex_t	print;
-	pthread_mutex_t	*monitor_check;
 }	t_philos;
 
 typedef struct s_vars {
@@ -72,7 +71,6 @@ typedef struct s_vars {
 	ssize_t			num_must_eat;
 	ssize_t			initial_time;
 	pthread_mutex_t	print;
-	pthread_mutex_t	*monitor_check;
 }	t_vars;
 
 /* setup.c */

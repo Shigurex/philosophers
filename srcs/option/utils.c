@@ -6,16 +6,16 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 18:13:09 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:45:18 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-void	print_state(pthread_mutex_t *print, t_state state, ssize_t timestamp, ssize_t id)
+void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id)
 {
-	pthread_mutex_lock(print);
-	//timestamp = timestamp - vars->initial_time;
+	pthread_mutex_lock(&vars->print);
+	timestamp = timestamp - vars->initial_time;
 	if (state == TAKEN_A_FORK)
 		printf(TAKEN_A_FORK_MESSAGE, timestamp, id);
 	else if (state == EATING)
@@ -26,7 +26,7 @@ void	print_state(pthread_mutex_t *print, t_state state, ssize_t timestamp, ssize
 		printf(THINKING_MESSAGE, timestamp, id);
 	else if (state == DIED)
 		printf(DIED_MESSAGE, timestamp, id);
-	pthread_mutex_unlock(print);
+	pthread_mutex_unlock(&vars->print);
 }
 
 ssize_t	get_timestamp(void)

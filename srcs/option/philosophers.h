@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 19:49:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/11/07 21:45:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,16 +54,16 @@ typedef struct s_philos {
 	ssize_t			num_ate;
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;
-	ssize_t			initial_time;
-	pthread_mutex_t	print;
-	pthread_mutex_t	*monitor_check;
+	struct s_vars	*vars;
 }	t_philos;
 
 typedef struct s_vars {
 	t_philos		*philos;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	print;
+	pthread_mutex_t	check;
 	pthread_t		*threads;
-	pthread_t		monitor;
+	pthread_t		observer;
 	ssize_t			num_philos;
 	ssize_t			time_to_die;
 	ssize_t			time_to_eat;
@@ -71,26 +71,24 @@ typedef struct s_vars {
 	bool			option_set;
 	ssize_t			num_must_eat;
 	ssize_t			initial_time;
-	pthread_mutex_t	print;
-	pthread_mutex_t	*monitor_check;
 }	t_vars;
 
-/* setup.c */
-int		init_setup(t_vars *vars, int argc, char **argv);
+/* <-- setup.c --> */
+int		init_setup(int argc, char **argv, t_vars *vars);
 
-/* execute.c */
+/* <-- execute.c --> */
 void	exec_action(t_vars *vars);
 
-/* philos.c */
+/* <-- philos.c --> */
 void	*act_philos(void *p);
 
-/* monitor.c */
-void	*monitor_philos(void *p);
+/* <-- observer.c --> */
+void	*observe_philos(void *p);
 
-/* util.c */
-void	print_state(pthread_mutex_t *print, t_state state, ssize_t timestamp, ssize_t id);
+/* <-- utils.c --> */
+void	print_state(t_vars *vars, t_state state, ssize_t timestamp, ssize_t id);
+ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
-ssize_t	atoi_positive(const char *str);
 
 #endif

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/10 18:06:11 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 18:47:14 by yahokari         ###   ########.fr       */
+/*   Created: 2022/11/07 10:54:54 by yahokari          #+#    #+#             */
+/*   Updated: 2022/11/07 21:45:14 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,22 @@ static void	create_threads(t_vars *vars)
 	ssize_t	i;
 
 	i = 0;
+	pthread_mutex_lock(&vars->check);
 	while (i < vars->num_philos)
 	{
 		pthread_create(&vars->threads[i], NULL, &act_philos, &vars->philos[i]);
 		i++;
 	}
-	pthread_create(&vars->monitor, NULL, &monitor_philos, vars);
+	vars->initial_time = get_timestamp();
+	pthread_mutex_unlock(&vars->check);
+	pthread_create(&vars->observer, NULL, &observe_philos, vars);
 }
 
 static void	delete_threads(t_vars *vars)
 {
 	ssize_t	i;
 
-	pthread_join(vars->monitor, NULL);
+	pthread_join(vars->observer, NULL);
 	i = 0;
 	while (i < vars->num_philos)
 	{
@@ -49,6 +52,7 @@ static void	destroy_mutex(t_vars *vars)
 		i++;
 	}
 	pthread_mutex_destroy(&vars->print);
+	pthread_mutex_destroy(&vars->check);
 }
 
 void	exec_action(t_vars *vars)
