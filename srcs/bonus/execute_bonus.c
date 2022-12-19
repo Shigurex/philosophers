@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:05:23 by yahokari          #+#    #+#             */
-/*   Updated: 2022/11/07 17:28:57 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:50:00 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,14 @@ void	create_process(t_vars *vars)
 
 void	delete_process(t_vars *vars)
 {
-	for (size_t i = 0; i <vars->num_philos; i++)
+	ssize_t	i;
+
+	i = 0;
+	while (i < vars->num_philos)
+	{
 		printf("%d\n",waitpid(-1, NULL, 0));
+		i++;
+	}
 	printf("%s, %d\n", __FILE__, __LINE__);
 }
 

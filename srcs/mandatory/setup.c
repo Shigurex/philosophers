@@ -6,13 +6,13 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:25:52 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:23:11 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers.h"
 
-static int	check_argument(t_vars *vars, int argc, char **argv)
+int	check_argument(t_vars *vars, int argc, char **argv)
 {
 	if (argc == 5)
 		vars->option_set = false;
@@ -33,7 +33,7 @@ static int	check_argument(t_vars *vars, int argc, char **argv)
 	return (0);
 }
 
-static int	init_mutexes(t_vars *vars)
+int	init_mutexes(t_vars *vars)
 {
 	ssize_t	i;
 
@@ -48,66 +48,61 @@ static int	init_mutexes(t_vars *vars)
 		pthread_mutex_init(&vars->monitor_check[i], NULL);
 		i++;
 	}
-	// vars->print = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&vars->print, NULL);
-	//pthread_mutex_init(&vars->monitor_check, NULL);
 	return (0);
 }
 
-static int	init_philos(t_vars *vars)
+static void	init_philos_structure(t_vars *vars, ssize_t i)
+{
+	vars->philos[i].id = i + 1;
+	vars->philos[i].right_fork = &vars->forks[i];
+	vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
+	vars->last_meal[i] = vars->initial_time;
+	vars->philos[i].last_meal = &vars->last_meal[i];
+	vars->num_ate[i] = 0;
+	vars->philos[i].num_ate = &vars->num_ate[i];
+	vars->philos[i].time_to_eat = vars->time_to_eat;
+	vars->philos[i].time_to_sleep = vars->time_to_sleep;
+	vars->philos[i].initial_time = vars->initial_time;
+	vars->philos[i].print = vars->print;
+	vars->philos[i].monitor_check = &vars->monitor_check[i];
+}
+
+int	init_philos(t_vars *vars)
 {
 	ssize_t	i;
 
 	vars->initial_time = get_timestamp() + 1000;
 	vars->philos = malloc(sizeof(t_philos) * vars->num_philos);
-	if (!vars->philos)
-	{
-		free(vars->forks);
-		return (1);
-	}
 	vars->last_meal = malloc(sizeof(ssize_t) * vars->num_philos);
 	vars->num_ate = malloc(sizeof(ssize_t) * vars->num_philos);
+	if (!vars->philos || !vars->last_meal || !vars->num_ate)
+	{
+		free(vars->forks);
+		free(vars->philos);
+		free(vars->last_meal);
+		free(vars->num_ate);
+		return (1);
+	}
 	i = 0;
 	while (i < vars->num_philos)
 	{
-		vars->philos[i].id = i + 1;
-		vars->philos[i].right_fork = &vars->forks[i];
-		vars->philos[i].left_fork = &vars->forks[(i + 1) % vars->num_philos];
-		vars->last_meal[i] = vars->initial_time;
-		vars->philos[i].last_meal = &vars->last_meal[i];
-		vars->num_ate[i] = 0;
-		vars->philos[i].num_ate = &vars->num_ate[i];
-		vars->philos[i].time_to_eat = vars->time_to_eat;
-		vars->philos[i].time_to_sleep = vars->time_to_sleep;
-		vars->philos[i].initial_time = vars->initial_time;
-		vars->philos[i].print = vars->print;
-		vars->philos[i].monitor_check = &vars->monitor_check[i];
+		init_philos_structure(vars, i);
 		i++;
 	}
 	return (0);
 }
 
-static int	init_threads(t_vars *vars)
+int	init_threads(t_vars *vars)
 {
 	vars->threads = malloc(sizeof(pthread_t) * vars->num_philos);
 	if (!vars->threads)
 	{
 		free(vars->forks);
 		free(vars->philos);
+		free(vars->last_meal);
+		free(vars->num_ate);
 		return (1);
 	}
-	return (0);
-}
-
-int	init_setup(t_vars *vars, int argc, char **argv)
-{
-	if (check_argument(vars, argc, argv))
-		return (1);
-	if (init_mutexes(vars))
-		return (1);
-	if (init_philos(vars))
-		return (1);
-	if (init_threads(vars))
-		return (1);
 	return (0);
 }

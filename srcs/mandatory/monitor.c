@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:24:33 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:40:27 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/19 15:27:49 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	check_death(t_vars *vars, ssize_t i)
 	pthread_mutex_unlock(&vars->monitor_check[i]);
 	if (timestamp >= time_of_death)
 	{
-		print_state(&vars->print, DIED, timestamp, i + 1);
+		print_state(&vars->print, DIED, timestamp - vars->initial_time, i + 1);
 		return (true);
 	}
 	return (false);

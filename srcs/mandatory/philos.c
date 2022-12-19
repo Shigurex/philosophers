@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:09:04 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:36:48 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:17:11 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@ static void	eat_meal(t_philos *philos)
 	ssize_t	eat_start;
 
 	pthread_mutex_lock(philos->right_fork);
-	print_state(&philos->print, TAKEN_A_FORK, get_timestamp(), philos->id);
+	print_state(&philos->print, TAKEN_A_FORK, \
+		get_timestamp() - philos->initial_time, philos->id);
 	pthread_mutex_lock(philos->left_fork);
-	print_state(&philos->print, TAKEN_A_FORK, get_timestamp(), philos->id);
+	print_state(&philos->print, TAKEN_A_FORK, \
+		get_timestamp() - philos->initial_time, philos->id);
 	eat_start = get_timestamp();
 	pthread_mutex_lock(philos->monitor_check);
 	*philos->last_meal = eat_start;
 	pthread_mutex_unlock(philos->monitor_check);
-	print_state(&philos->print, EATING, eat_start, philos->id);
+	print_state(&philos->print, EATING, \
+		eat_start - philos->initial_time, philos->id);
 	wait_certain_time(eat_start + philos->time_to_eat);
 	pthread_mutex_lock(philos->monitor_check);
 	(*philos->num_ate)++;
@@ -38,13 +41,15 @@ static void	sleep_philos(t_philos *philos)
 	ssize_t	sleep_start;
 
 	sleep_start = get_timestamp();
-	print_state(&philos->print, SLEEPING, sleep_start, philos->id);
+	print_state(&philos->print, SLEEPING, \
+		sleep_start - philos->initial_time, philos->id);
 	wait_certain_time(sleep_start + philos->time_to_sleep);
 }
 
 static void	think_philos(t_philos *philos)
 {
-	print_state(&philos->print, THINKING, get_timestamp(), philos->id);
+	print_state(&philos->print, THINKING, \
+		get_timestamp() - philos->initial_time, philos->id);
 }
 
 void	*act_philos(void *p)

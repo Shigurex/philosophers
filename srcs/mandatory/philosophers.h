@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/10 20:36:08 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/19 16:19:08 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ typedef struct s_vars {
 }	t_vars;
 
 /* setup.c */
-int		init_setup(t_vars *vars, int argc, char **argv);
+int		check_argument(t_vars *vars, int argc, char **argv);
+int		init_mutexes(t_vars *vars);
+int		init_philos(t_vars *vars);
+int		init_threads(t_vars *vars);
 
 /* execute.c */
 void	exec_action(t_vars *vars);
@@ -90,7 +93,8 @@ void	*act_philos(void *p);
 void	*monitor_philos(void *p);
 
 /* util.c */
-void	print_state(pthread_mutex_t *print, t_state state, ssize_t timestamp, ssize_t id);
+void	print_state(pthread_mutex_t *print, t_state state, \
+	ssize_t timestamp, ssize_t id);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
 ssize_t	atoi_positive(const char *str);
