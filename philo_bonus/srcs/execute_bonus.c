@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:05:23 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/19 16:50:00 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/30 10:26:25 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	create_process(t_vars *vars)
 {
-	size_t		i;
+	ssize_t		i;
 	t_philos	*philos;
 
 	i = 0;

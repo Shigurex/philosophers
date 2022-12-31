@@ -1,11 +1,11 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRCS_NAME = mandatory/main.c \
-	mandatory/setup.c \
-	mandatory/execute.c \
-	mandatory/philos.c \
-	mandatory/monitor.c \
-	mandatory/utils.c
+SRCS_NAME = main.c \
+	setup.c \
+	execute.c \
+	philos.c \
+	monitor.c \
+	utils.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))
@@ -32,4 +32,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: make clean fclean re bonus
+.PHONY: make clean fclean re
