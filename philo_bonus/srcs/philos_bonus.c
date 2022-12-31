@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   philos_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 15:48:03 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/31 10:41:34 by yahokari         ###   ########.fr       */
+/*   Created: 2022/12/31 10:46:51 by yahokari          #+#    #+#             */
+/*   Updated: 2022/12/31 11:56:38 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers_bonus.h"
 
-int	main(int argc, char **argv)
-{
-	t_vars	vars;
+// void	act_philo(t_philos *philo)
+// {
+// 	;
+// }
 
-	init_setup(argc, argv, &vars);
+// void	act_monitor(t_vars *vars, t_philos *philo)
+// {
+// 	;
+// }
+
+void	philo_and_monitor(t_philos *philo)
+{
+	t_vars	*vars;
+
+	vars = philo->vars;
 	printf("%s, %d\n", __FILE__, __LINE__);
-	exec_action(&vars);
-	return (0);
 }

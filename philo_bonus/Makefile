@@ -3,7 +3,8 @@ CFLAGS = -Wall -Wextra -Werror
 SRCS_NAME = main_bonus.c \
 	execute_bonus.c \
 	setup_bonus.c \
-	utils_bonus.c
+	utils_bonus.c \
+	philos_bonus.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))

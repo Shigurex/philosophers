@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:48:44 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/30 10:51:28 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/31 11:54:45 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,15 @@ typedef enum e_state {
 
 typedef struct s_philos {
 	pid_t			pid;
+	pthread_t		monitor;
 	ssize_t			id;
+	sem_t			*forks;
 	t_state			status;
 	ssize_t			last_meal;
-	ssize_t			last_action;
 	ssize_t			num_ate;
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;
+	ssize_t			initial_time;
 	struct s_vars	*vars;
 }	t_philos;
 
@@ -83,5 +85,7 @@ void	print_state(pthread_mutex_t *print, t_state state, \
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
+
+void	philo_and_monitor(t_philos *philo);
 
 #endif

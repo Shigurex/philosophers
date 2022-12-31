@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/30 10:48:31 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/31 10:41:49 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	check_argument(int argc, char **argv, t_vars *vars)
 
 static void	init_semaphore(t_vars *vars)
 {
-	vars->forks = sem_open(NULL, O_CREAT, 0644, 1);
+	vars->forks = sem_open("a", O_CREAT, 0644, 1);
 	if (vars->forks == SEM_FAILED)
 		exit(EXIT_FAILURE);
 }
@@ -43,6 +43,7 @@ static void	init_philos(t_vars *vars)
 {
 	ssize_t	i;
 
+	vars->initial_time = get_timestamp() + 1000;
 	vars->philos = malloc(sizeof(t_philos) * vars->num_philos);
 	if (!vars->philos)
 	{
@@ -53,10 +54,12 @@ static void	init_philos(t_vars *vars)
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
+		vars->philos[i].forks = vars->forks;
 		vars->philos[i].status = INIT;
 		vars->philos[i].num_ate = 0;
 		vars->philos[i].time_to_eat = vars->time_to_eat;
 		vars->philos[i].time_to_sleep = vars->time_to_sleep;
+		vars->philos[i].initial_time = vars->initial_time;
 		vars->philos[i].vars = vars;
 		i++;
 	}
@@ -65,7 +68,7 @@ static void	init_philos(t_vars *vars)
 int	init_setup(int argc, char **argv, t_vars *vars)
 {
 	check_argument(argc, argv, vars);
-	init_philos(vars);
 	init_semaphore(vars);
+	init_philos(vars);
 	return (0);
 }

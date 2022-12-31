@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/19 16:23:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/31 10:36:33 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,12 @@ int	init_mutexes(t_vars *vars)
 
 	vars->forks = malloc(sizeof(pthread_mutex_t) * vars->num_philos);
 	vars->monitor_check = malloc(sizeof(pthread_mutex_t) * vars->num_philos);
-	if (!vars->forks)
+	if (!vars->forks || !vars->monitor_check)
+	{
+		free(vars->forks);
+		free(vars->monitor_check);
 		return (1);
+	}
 	i = 0;
 	while (i < vars->num_philos)
 	{

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:05:23 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/30 10:26:25 by yahokari         ###   ########.fr       */
+/*   Updated: 2022/12/31 11:55:06 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void	create_process(t_vars *vars)
 		if (philos->pid < 0)
 			exit(EXIT_FAILURE);
 		else if (philos->pid == CHILD)
-			exit(printf("hello\n"));
+		{
+			philo_and_monitor(philos);
+			exit(1);
+		}
 		i++;
 	}
 }
