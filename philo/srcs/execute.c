@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:06:11 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 15:59:06 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:57:36 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	destroy_mutex(t_vars *vars)
 	pthread_mutex_destroy(&vars->print);
 }
 
-void	free_allocated_memory(t_vars *vars)
+static void	free_allocated_memory(t_vars *vars)
 {
 	free(vars->forks);
 	free(vars->monitor_check);

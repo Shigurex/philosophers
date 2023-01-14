@@ -6,17 +6,11 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:19:58 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 20:14:18 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:58:49 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers_bonus.h"
-
-//bool	is_action_finished(t_philos *philos, t_vars *vars)
-//{
-//	if (vars->option_set == true && philos->num_ate >= vars->num_must_eat)
-//		return (true);
-//}
 
 static void	check_death(t_philos *philo, t_vars *vars, int id)
 {
@@ -40,7 +34,7 @@ static void	check_death(t_philos *philo, t_vars *vars, int id)
 	}
 }
 
-void	check_eaten(t_philos *philo, t_vars *vars)
+static void	check_eaten(t_philos *philo, t_vars *vars)
 {
 	static bool	is_sem_post_sent;
 

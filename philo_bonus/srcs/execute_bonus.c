@@ -6,13 +6,13 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 17:05:23 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 20:47:19 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:58:36 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers_bonus.h"
 
-void	philo_and_monitor(t_philos *philo)
+static void	philo_and_monitor(t_philos *philo)
 {
 	t_vars		*vars;
 	pthread_t	thread;
@@ -24,7 +24,7 @@ void	philo_and_monitor(t_philos *philo)
 	pthread_detach(thread);
 }
 
-void	create_process(t_vars *vars)
+static void	create_process(t_vars *vars)
 {
 	ssize_t		i;
 	t_philos	*philo;
@@ -42,7 +42,7 @@ void	create_process(t_vars *vars)
 	}
 }
 
-void	wait_for_sem_signal(t_vars *vars)
+static void	wait_for_sem_signal(t_vars *vars)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ void	wait_for_sem_signal(t_vars *vars)
 	}
 }
 
-void	delete_process(t_vars *vars)
+static void	delete_process(t_vars *vars)
 {
 	t_philos	*philo;
 	ssize_t		i;
@@ -68,7 +68,7 @@ void	delete_process(t_vars *vars)
 	}
 }
 
-void	sem_delete(t_vars *vars)
+static void	sem_delete(t_vars *vars)
 {
 	sem_close(vars->forks);
 	sem_unlink(FORKS);
