@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/12 13:33:01 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:49:09 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	check_argument(int argc, char **argv, t_vars *vars)
 	else if (argc == 6)
 		vars->option_set = true;
 	else
-		exit(EXIT_FAILURE);
+		exit_with_message(ARGUMENT_ERROR);
 	vars->num_philos = atoi_positive(argv[1]);
 	vars->time_to_die = atoi_positive(argv[2]);
 	vars->time_to_eat = atoi_positive(argv[3]);
@@ -29,14 +29,23 @@ static void	check_argument(int argc, char **argv, t_vars *vars)
 	if (vars->num_philos == ERROR || vars->time_to_die == ERROR
 		|| vars->time_to_eat == ERROR || vars->time_to_sleep == ERROR
 		|| (vars->option_set == true && vars->num_must_eat == ERROR))
-		exit(EXIT_FAILURE);
+		exit_with_message(ARGUMENT_ERROR);
 }
 
 static void	init_semaphore(t_vars *vars)
 {
-	vars->forks = sem_open("forks", O_CREAT, 0666, vars->num_philos);
+	sem_unlink(FORKS);
+	vars->forks = sem_open(FORKS, O_CREAT, 0644, vars->num_philos);
 	if (vars->forks == SEM_FAILED)
-		exit(EXIT_FAILURE);
+		exit_with_message(SEMAPHORE_ERROR);
+	sem_unlink(PRINT);
+	vars->print = sem_open(PRINT, O_CREAT, 0644, 1);
+	if (vars->print == SEM_FAILED)
+		exit_with_message(SEMAPHORE_ERROR);
+	sem_unlink(CHECK_END);
+	vars->check_end = sem_open(CHECK_END, O_CREAT, 0644, 0);
+	if (vars->check_end == SEM_FAILED)
+		exit_with_message(SEMAPHORE_ERROR);
 }
 
 static void	init_philos(t_vars *vars)
@@ -46,16 +55,14 @@ static void	init_philos(t_vars *vars)
 	vars->initial_time = get_timestamp() + 1000;
 	vars->philos = malloc(sizeof(t_philos) * vars->num_philos);
 	if (!vars->philos)
-	{
-		free(vars->forks);
-		exit(EXIT_FAILURE);
-	}
+		exit_with_message(MALLOC_ERROR);
 	i = 0;
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
 		vars->philos[i].forks = vars->forks;
-		vars->philos[i].status = INIT;
+		vars->philos[i].print = vars->print;
+		vars->philos[i].last_meal = vars->initial_time;
 		vars->philos[i].num_ate = 0;
 		vars->philos[i].time_to_eat = vars->time_to_eat;
 		vars->philos[i].time_to_sleep = vars->time_to_sleep;

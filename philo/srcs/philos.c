@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 18:09:04 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 15:46:52 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:15:20 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,5 @@ void	*act_philos(void *p)
 		sleep_philos(philos);
 		think_philos(philos);
 	}
+	return (NULL);
 }

@@ -6,14 +6,15 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/12 00:32:42 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 20:12:50 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include	"philosophers_bonus.h"
 
-void	print_state(t_state state, ssize_t timestamp, ssize_t id)
+void	print_state(sem_t *print, t_state state, ssize_t timestamp, ssize_t id)
 {
+	sem_wait(print);
 	if (state == TAKEN_A_FORK)
 		printf(TAKEN_A_FORK_MESSAGE, timestamp, id);
 	else if (state == EATING)
@@ -24,6 +25,8 @@ void	print_state(t_state state, ssize_t timestamp, ssize_t id)
 		printf(THINKING_MESSAGE, timestamp, id);
 	else if (state == DIED)
 		printf(DIED_MESSAGE, timestamp, id);
+	if (state != DIED)
+		sem_post(print);
 }
 
 ssize_t	get_timestamp(void)
@@ -70,4 +73,10 @@ ssize_t	atoi_positive(const char *str)
 	if (value == 0)
 		return (ERROR);
 	return (value);
+}
+
+void	exit_with_message(char *str)
+{
+	printf("%s", str);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:48:44 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/12 10:14:14 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:42:33 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@
 # include	<stdlib.h>
 # include	<limits.h>
 # include	<stdbool.h>
+# include	<signal.h>
 # include	<sys/time.h>
+
+# define ARGUMENT_ERROR "invalid argument\n"
+# define MALLOC_ERROR "memory allocation failed\n"
+# define SEMAPHORE_ERROR "semaphore failed\n"
+# define FORK_ERROR "fork failed\n"
 
 # define TAKEN_A_FORK_MESSAGE "%zu %zu has taken a fork\n"
 # define EATING_MESSAGE "%zu %zu is eating\n"
@@ -39,6 +45,10 @@
 
 # define MILISECOND 1000
 
+# define FORKS "forks"
+# define PRINT "print"
+# define CHECK_END "check_end"
+
 typedef enum e_state {
 	TAKEN_A_FORK,
 	EATING,
@@ -51,10 +61,10 @@ typedef enum e_state {
 
 typedef struct s_philos {
 	pid_t			pid;
-	pthread_t		monitor;
 	ssize_t			id;
+	pthread_mutex_t	check;
 	sem_t			*forks;
-	t_state			status;
+	sem_t			*print;
 	ssize_t			last_meal;
 	ssize_t			num_ate;
 	ssize_t			time_to_eat;
@@ -66,6 +76,8 @@ typedef struct s_philos {
 typedef struct s_vars {
 	t_philos	*philos;
 	sem_t		*forks;
+	sem_t		*check_end;
+	sem_t		*print;
 	ssize_t		num_philos;
 	ssize_t		time_to_die;
 	ssize_t		time_to_eat;
@@ -82,10 +94,15 @@ int		init_setup(int argc, char **argv, t_vars *vars);
 void	exec_action(t_vars *vars);
 
 /* <-- utils_bonus.c --> */
-void	print_state(t_state state, ssize_t timestamp, ssize_t id);
+void	print_state(sem_t *print, t_state state, ssize_t timestamp, ssize_t id);
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
+void	exit_with_message(char *str);
+
+void	*act_philo(void *p);
+
+void	act_monitor(t_philos *philos, t_vars *vars);
 
 void	philo_and_monitor(t_philos *philo);
 
