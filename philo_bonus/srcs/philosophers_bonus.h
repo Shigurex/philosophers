@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:48:44 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/31 11:54:45 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/12 10:14:14 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 
 # define USED 1
 # define UNUSED 0
+
+# define MILISECOND 1000
 
 typedef enum e_state {
 	TAKEN_A_FORK,
@@ -80,8 +82,7 @@ int		init_setup(int argc, char **argv, t_vars *vars);
 void	exec_action(t_vars *vars);
 
 /* <-- utils_bonus.c --> */
-void	print_state(pthread_mutex_t *print, t_state state, \
-	ssize_t timestamp, ssize_t id);
+void	print_state(t_state state, ssize_t timestamp, ssize_t id);
 ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/31 10:41:49 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:33:01 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	check_argument(int argc, char **argv, t_vars *vars)
 
 static void	init_semaphore(t_vars *vars)
 {
-	vars->forks = sem_open("a", O_CREAT, 0644, 1);
+	vars->forks = sem_open("forks", O_CREAT, 0666, vars->num_philos);
 	if (vars->forks == SEM_FAILED)
 		exit(EXIT_FAILURE);
 }

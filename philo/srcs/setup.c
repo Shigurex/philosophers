@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 15:46:11 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:58:24 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	init_philos(t_vars *vars)
 	if (!vars->philos || !vars->last_meal || !vars->num_ate)
 	{
 		free(vars->forks);
+		free(vars->monitor_check);
 		free(vars->philos);
 		free(vars->last_meal);
 		free(vars->num_ate);
@@ -103,6 +104,7 @@ int	init_threads(t_vars *vars)
 	if (!vars->threads)
 	{
 		free(vars->forks);
+		free(vars->monitor_check);
 		free(vars->philos);
 		free(vars->last_meal);
 		free(vars->num_ate);
