@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 10:41:14 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/19 16:19:08 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:45:56 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_philos {
 	ssize_t			time_to_eat;
 	ssize_t			time_to_sleep;
 	ssize_t			initial_time;
-	pthread_mutex_t	print;
+	pthread_mutex_t	*print;
 	pthread_mutex_t	*monitor_check;
 }	t_philos;
 

@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/10 17:36:58 by yahokari          #+#    #+#             */
-/*   Updated: 2022/12/31 10:36:33 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:46:11 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	init_philos_structure(t_vars *vars, ssize_t i)
 	vars->philos[i].time_to_eat = vars->time_to_eat;
 	vars->philos[i].time_to_sleep = vars->time_to_sleep;
 	vars->philos[i].initial_time = vars->initial_time;
-	vars->philos[i].print = vars->print;
+	vars->philos[i].print = &vars->print;
 	vars->philos[i].monitor_check = &vars->monitor_check[i];
 }
 
