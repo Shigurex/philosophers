@@ -6,7 +6,7 @@ SRCS_NAME = main_bonus.c \
 	utils_bonus.c \
 	philo_bonus.c \
 	monitor_bonus.c \
-	ft_itoa.c
+	ft_itoa_bonus.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))

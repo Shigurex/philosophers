@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 17:11:30 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 15:52:08 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:08:04 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,7 @@
 void	print_state(pthread_mutex_t *print, t_state state, \
 	ssize_t timestamp, ssize_t id)
 {
-	static bool	is_dead;
-
 	pthread_mutex_lock(print);
-	if (is_dead)
-		return ;
 	if (state == TAKEN_A_FORK)
 		printf(TAKEN_A_FORK_MESSAGE, timestamp, id);
 	else if (state == EATING)
@@ -29,11 +25,9 @@ void	print_state(pthread_mutex_t *print, t_state state, \
 	else if (state == THINKING)
 		printf(THINKING_MESSAGE, timestamp, id);
 	else if (state == DIED)
-	{
-		is_dead = true;
 		printf(DIED_MESSAGE, timestamp, id);
-	}
-	pthread_mutex_unlock(print);
+	if (state != DIED)
+		pthread_mutex_unlock(print);
 }
 
 ssize_t	get_timestamp(void)
