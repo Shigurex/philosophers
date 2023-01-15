@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:19:58 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 20:58:49 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:12:45 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static void	check_eaten(t_philos *philo, t_vars *vars)
 {
 	static bool	is_sem_post_sent;
 
+	if (vars->option_set == false)
+		return ;
 	pthread_mutex_lock(&philo->check);
 	if (philo->num_ate >= vars->num_must_eat && is_sem_post_sent == false)
 	{
