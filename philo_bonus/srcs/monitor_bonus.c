@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:19:58 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/15 16:12:45 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:46:34 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void	check_death(t_philos *philo, t_vars *vars, int id)
 	ssize_t	i;
 
 	timestamp = get_timestamp();
-	pthread_mutex_lock(&philo->check);
+	sem_wait(philo->check);
 	time_of_death = philo->last_meal + vars->time_to_die;
-	pthread_mutex_unlock(&philo->check);
+	sem_post(philo->check);
 	if (timestamp >= time_of_death)
 	{
 		print_state(vars->print, DIED, timestamp - vars->initial_time, id);
@@ -40,26 +40,35 @@ static void	check_eaten(t_philos *philo, t_vars *vars)
 
 	if (vars->option_set == false)
 		return ;
-	pthread_mutex_lock(&philo->check);
+	sem_wait(philo->check);
 	if (philo->num_ate >= vars->num_must_eat && is_sem_post_sent == false)
 	{
 		sem_post(vars->check_end);
 		is_sem_post_sent = true;
 	}
-	pthread_mutex_unlock(&philo->check);
+	sem_post(philo->check);
 }
 
-void	act_monitor(t_philos *philo, t_vars *vars)
+static void	act_monitor(t_philos *philo, t_vars *vars)
 {
 	int	id;
 
-	pthread_mutex_lock(&philo->check);
 	id = philo->id;
-	pthread_mutex_unlock(&philo->check);
 	while (true)
 	{
 		check_death(philo, vars, id);
 		check_eaten(philo, vars);
 		usleep(MILISECOND);
 	}
+}
+
+void	philo_and_monitor(t_philos *philo)
+{
+	t_vars		*vars;
+	pthread_t	thread;
+
+	vars = philo->vars;
+	pthread_create(&thread, NULL, &act_philo, philo);
+	act_monitor(philo, vars);
+	pthread_detach(thread);
 }

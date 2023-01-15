@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 15:48:44 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 20:59:41 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:42:22 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef enum e_state {
 typedef struct s_philos {
 	pid_t			pid;
 	ssize_t			id;
-	pthread_mutex_t	check;
+	sem_t			*check;
 	sem_t			*forks;
 	sem_t			*print;
 	ssize_t			last_meal;
@@ -97,7 +97,7 @@ void	exec_action(t_vars *vars);
 void	*act_philo(void *p);
 
 /* <-- monitor_bonus.c --> */
-void	act_monitor(t_philos *philos, t_vars *vars);
+void	philo_and_monitor(t_philos *philo);
 
 /* <-- utils_bonus.c --> */
 void	print_state(sem_t *print, t_state state, ssize_t timestamp, ssize_t id);
@@ -105,5 +105,8 @@ ssize_t	atoi_positive(const char *str);
 ssize_t	get_timestamp(void);
 void	wait_certain_time(ssize_t time_end);
 void	exit_with_message(char *str);
+
+/* <-- ft_itoa.c --> */
+char	*ft_itoa(int n);
 
 #endif

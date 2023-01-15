@@ -5,7 +5,8 @@ SRCS_NAME = main_bonus.c \
 	setup_bonus.c \
 	utils_bonus.c \
 	philo_bonus.c \
-	monitor_bonus.c
+	monitor_bonus.c \
+	ft_itoa.c
 SRCDIR = srcs
 OBJDIR = objs
 SRCS = $(addprefix $(SRCDIR)/, $(SRCS_NAME))
@@ -32,4 +33,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: make clean fclean re
+.PHONY: all clean fclean re

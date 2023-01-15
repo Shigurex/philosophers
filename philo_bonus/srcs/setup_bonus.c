@@ -6,7 +6,7 @@
 /*   By: yahokari <yahokari@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 10:16:29 by yahokari          #+#    #+#             */
-/*   Updated: 2023/01/14 20:49:09 by yahokari         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:50:05 by yahokari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,20 @@ static void	init_semaphore(t_vars *vars)
 		exit_with_message(SEMAPHORE_ERROR);
 }
 
+void	init_sem_check(t_philos *philo)
+{
+	char	*name;
+
+	name = (ft_itoa(philo->id));
+	if (!name)
+		exit_with_message(MALLOC_ERROR);
+	sem_unlink(name);
+	philo->check = sem_open(name, O_CREAT, 0644, 1);
+	free(name);
+	if (philo->check == SEM_FAILED)
+		exit_with_message(SEMAPHORE_ERROR);
+}
+
 static void	init_philos(t_vars *vars)
 {
 	ssize_t	i;
@@ -60,6 +74,8 @@ static void	init_philos(t_vars *vars)
 	while (i < vars->num_philos)
 	{
 		vars->philos[i].id = i + 1;
+		sem_unlink(CHECK_END);
+		init_sem_check(&vars->philos[i]);
 		vars->philos[i].forks = vars->forks;
 		vars->philos[i].print = vars->print;
 		vars->philos[i].last_meal = vars->initial_time;
